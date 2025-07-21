@@ -39,7 +39,7 @@ test.describe('Product tests - @regression @product', () => {
         await cartPage.isProductNameExist("Men Tshirt");
     });
     
-    test("Verify Product quantity in Cart", async ({homePage, productsPage, productDetailPage, cartPage})=>{
+    test("Verify Product quantity in Cart.", async ({homePage, productsPage, productDetailPage, cartPage})=>{
         productsPage = await homePage.openProducts();
         expect(await productsPage.isProductVisible()).toBeTruthy();
     
