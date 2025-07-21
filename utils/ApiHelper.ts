@@ -46,4 +46,54 @@ export class ApiHelper{
         
         return body;
     }
+
+    static async verifyLogin(user: UserRandom){
+        const apiContext = await request.newContext();
+
+        const formData = new URLSearchParams();
+        formData.append('email', user.getEmail());
+        formData.append('password', user.getPassword());
+
+        const response = await apiContext.post("/api/verifyLogin", 
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            data: formData.toString(),
+
+        });
+        const body = await response.json();
+        return body;
+
+    }
+
+    static async getUserDetailByEmail(user: UserRandom){
+        const apiContext = await request.newContext();
+        const response = await apiContext.get(`/api/getUserDetailByEmail?email=${user.getEmail()}`);
+        const body = await response.json();
+        return body;
+    }
+
+    static async deleteAccount(user: UserRandom){
+        const apiContext = await request.newContext();
+
+        const formData = new URLSearchParams();
+        formData.append('email', user.getEmail());
+        formData.append('password', user.getPassword());
+
+        const response = await apiContext.delete("/api/deleteAccount", 
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            data: formData.toString(),
+
+        });
+        const body = await response.json();
+        return body;
+
+    }
+
+
+
 }
