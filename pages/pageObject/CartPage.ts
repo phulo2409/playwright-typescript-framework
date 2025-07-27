@@ -1,18 +1,23 @@
+import { CheckoutConfirmationDialog } from '@pages/components/CheckOutConfirmationDialog';
 import{Page, expect, Locator} from '@playwright/test';
 
 export class CartPage{
     private readonly page: Page;
+    readonly checkOutConfirmationDialog: CheckoutConfirmationDialog;
     private readonly productTable: Locator;
     private readonly productNameList: Locator;
     private readonly quantityByName: Locator;
     private readonly deleteButton: Locator;
+    private readonly checkOutButton: Locator;
 
     constructor(page: Page){
         this.page = page;
-        this.productTable = page.locator("//table//tr");
+        this.checkOutConfirmationDialog = new CheckoutConfirmationDialog(page);
+        this.productTable = page.locator("#cart_info table");
         this.productNameList = page.locator("#cart_info_table .cart_description h4");
         this.quantityByName = page.locator("//h4/parent::td/following-sibling::td//button");
         this.deleteButton = page.locator("td.cart_delete a");
+        this.checkOutButton = page.locator('a.check_out');
     }
 
     async isProductNameExist(productName: string): Promise<boolean>{
@@ -39,6 +44,11 @@ export class CartPage{
 
     async isProductExist(): Promise<boolean>{
         return await this.productTable.isVisible();
+    }
+
+    async clickCheckOut(): Promise<void>{
+        await this.checkOutButton.click();
+        await this.page.waitForLoadState('load');
     }
 
 

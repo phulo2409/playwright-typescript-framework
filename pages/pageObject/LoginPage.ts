@@ -1,9 +1,11 @@
 import { Page, expect, Locator} from '@playwright/test';
-import { UserRandom } from '../data/UserRandom';
 import { HomePage } from './HomePage';
-import { BasePage } from './BasePage';
+import { BasePage } from '../common/BasePage';
+import { UserRandom } from '@data/UserRandom';
+import { HeaderComponent } from '@pages/components/HeaderComponent';
 
 export class LoginPage extends BasePage{
+    readonly headerComponent: HeaderComponent;
     private readonly nameTextbox: Locator;
     private readonly emailTextbox: Locator;
     private readonly maleRadio: Locator;
@@ -25,7 +27,6 @@ export class LoginPage extends BasePage{
     private readonly offerCheckbox: Locator;
     private readonly signupButton: Locator;
     private readonly createAccountButton: Locator;
-    private readonly confirmationMessage: Locator;
     private readonly continueButton: Locator;
     private readonly emailLoginTextbox: Locator;
     private readonly loginButton: Locator;
@@ -35,6 +36,7 @@ export class LoginPage extends BasePage{
 
     constructor(page:Page){
         super(page);
+        this.headerComponent = new HeaderComponent(page);
         this.nameTextbox = page.locator("input[name='name']");
         this.emailTextbox = page.locator("input[data-qa='signup-email']");
         this.maleRadio = page.locator("#id_gender1");
@@ -56,7 +58,6 @@ export class LoginPage extends BasePage{
         this.offerCheckbox = page.locator("#optin");
         this.signupButton = page.locator("button:has-text('Signup')");
         this.createAccountButton = page.locator("button:has-text('Create Account')");
-        this.confirmationMessage = page.locator("h2.title");
         this.continueButton = page.locator("a:has-text('Continue')");
 
         this.emailLoginTextbox = page.locator("input[data-qa='login-email']");
@@ -147,10 +148,6 @@ export class LoginPage extends BasePage{
         await this.createAccountButton.click();
     }
 
-    async getConfirmationMessage(): Promise<string | null>{
-        return await this.confirmationMessage.textContent();
-    }
-
     async clickSignup(): Promise<void>{
         await this.signupButton.click();
     }
@@ -229,11 +226,20 @@ export class LoginPage extends BasePage{
         await this.clickCreateAccount();
     }
 
-    async login(email: string, password: string): Promise<HomePage>{
-        await this.emailLoginTextbox.fill(email);
-        await this.passwordLoginTextbox.fill(password);
-        await this.loginButton.click();
-        return new HomePage(this.page);
-    }
+    async login(user: UserRandom | string, password?: string): Promise<void>{
+        let email: string;
+        let pwd: string;
 
+        if (typeof user === 'string') {
+            email = user;
+            pwd = password!;
+        } else {
+            email = user.getEmail();
+            pwd = user.getPassword();
+        }
+        await this.emailLoginTextbox.fill(email);
+        await this.passwordLoginTextbox.fill(pwd);
+        await this.loginButton.click();
+        await this.page.waitForLoadState('load');
+    }
 }

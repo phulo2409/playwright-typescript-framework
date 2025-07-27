@@ -1,3 +1,4 @@
+import { blockImages, blockImagesAndCSS } from 'utils/blockImages';
 import {test,expect} from '../fixtures/BaseTest';
 import { TestConfig } from '../test.config';
 
@@ -5,8 +6,12 @@ const config = new TestConfig();
 
 
 test.describe('Function Page - @regression @func', ()=>{
+    test.beforeEach(async ({page}) => {
+        await blockImagesAndCSS(page);
+    });
+
     test('Contact Us Form', async({homePage, contactUs, user}) =>{
-        contactUs = await homePage.openContactUs();
+        await homePage.openContactUs();
         expect(await contactUs.isTitleVisible()).toBeTruthy();
         await contactUs.enterName(user.getName());
         await contactUs.enterEmail(user.getEmail());

@@ -33,8 +33,8 @@ export class UserRandom {
         this.country = "Canada"
         this.state = faker.location.state();
         this.city = faker.location.city();
-        this.zipcode = "700000";
-        this.mobileNumber = "0123456789";
+        this.zipcode = faker.location.zipCode();
+        this.mobileNumber = faker.phone.number();
     }
 
     getName(): string{

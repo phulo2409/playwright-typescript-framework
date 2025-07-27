@@ -2,12 +2,19 @@ import {test,expect} from '../fixtures/BaseTest';
 import { faker } from '@faker-js/faker';
 import { allure } from 'allure-playwright';
 import { ApiHelper } from '../utils/ApiHelper';
+import { blockImages, blockImagesAndCSS } from 'utils/blockImages';
 
 test.describe('Account Registration tests - @regression @auth', () =>{
     test.describe.configure({mode: 'default'});
-    test('Register User', async ({homePage, loginPage, user})=>{
+
+    test.beforeEach(async ({page}) => {
+        await blockImagesAndCSS(page);
+    });
+
+    test('Register User', async ({homePage, loginPage, user, page})=>{
         await allure.step("1. Enter name and email address to Signup form", async() =>{
-            loginPage = await homePage.openLogin();
+            
+            await homePage.openLogin();
             await loginPage.enterNameSignup(user.getName());
             await loginPage.enterEmailSignup(user.getEmail());
             await loginPage.clickSignup();
@@ -22,7 +29,7 @@ test.describe('Account Registration tests - @regression @auth', () =>{
         });
 
         await allure.step("3. Click 'Continue' button", async() =>{
-            homePage = await loginPage.clickContinue();
+            await loginPage.clickContinue();
         });
         
         await allure.step(`Verify that Logged in as ${user.getName()} is visible`, async() => {
@@ -36,8 +43,8 @@ test.describe('Account Registration tests - @regression @auth', () =>{
         });
 
         await allure.step("Enter correct email address and password to Login", async() =>{
-            loginPage = await homePage.openLogin();
-            homePage = await loginPage.login(user.getEmail(), user.getPassword());
+            await homePage.openLogin();
+            await loginPage.login(user.getEmail(), user.getPassword());
         });
 
         await allure.step(`Verify that Logged in as ${user.getName()} is visible`, async() => {
@@ -47,8 +54,8 @@ test.describe('Account Registration tests - @regression @auth', () =>{
 
     test('Login User with incorrect email and password', async ({homePage, loginPage, user})=>{
         await allure.step("Enter incorrect email address and password", async() =>{
-            loginPage = await homePage.openLogin();
-            homePage = await loginPage.login(faker.internet.email(), user.getPassword());
+            await homePage.openLogin();
+            await loginPage.login(faker.internet.email(), user.getPassword());
         });
         
         await allure.step("Verify error 'Your email or password is incorrect!' is visible", async() => {
@@ -62,8 +69,8 @@ test.describe('Account Registration tests - @regression @auth', () =>{
         });
 
         await allure.step("1.Enter correct email address and password to Login", async() =>{
-            loginPage = await homePage.openLogin();
-            homePage = await loginPage.login(user.getEmail(), user.getPassword());
+            await homePage.openLogin();
+            await loginPage.login(user.getEmail(), user.getPassword());
         });
 
         await allure.step(`Verify that Logged in as ${user.getName()} is visible`, async() => {
@@ -71,7 +78,7 @@ test.describe('Account Registration tests - @regression @auth', () =>{
         });
 
         await allure.step("2.Click 'Logout' button", async() =>{
-            loginPage = await homePage.clickLogout();
+            await homePage.clickLogout();
         });
 
         await allure.step("Verify that user is navigated to login page", async() =>{

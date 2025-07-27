@@ -1,12 +1,14 @@
+import { UserRandom } from '@data/UserRandom';
+import { CartPage } from '@pages/pageObject/CartPage';
+import { CheckOutPage } from '@pages/pageObject/CheckOutPage';
+import { ContactUs } from '@pages/pageObject/ContactUs';
+import { HomePage } from '@pages/pageObject/HomePage';
+import { LoginPage } from '@pages/pageObject/LoginPage';
+import { ProductDetailPage } from '@pages/pageObject/ProductDetailPage';
+import { ProductsPage } from '@pages/pageObject/ProductsPage';
+import { TestCasesPage } from '@pages/pageObject/TestCasesPage';
 import { test as base } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
-import { LoginPage } from '../pages/LoginPage';
-import { UserRandom } from '../data/UserRandom';
-import { ContactUs } from '../pages/ContactUs';
-import { TestCasesPage } from '../pages/TestCasesPage';
-import { ProductsPage } from '../pages/ProductsPage';
-import { ProductDetailPage } from '../pages/ProductDetailPage';
-import { CartPage } from '../pages/CartPage';
+
 
 type MyFixtures = {
     homePage: HomePage;
@@ -16,6 +18,7 @@ type MyFixtures = {
     productsPage: ProductsPage;
     productDetailPage: ProductDetailPage;
     cartPage: CartPage;
+    checkOutPage: CheckOutPage;
     user: UserRandom;
 }
 
@@ -54,6 +57,11 @@ export const test = base.extend<MyFixtures>({
     cartPage: async({page}, use)=>{
         let cartPage = new CartPage(page);
         await use(cartPage);
+    },
+
+    checkOutPage: async({page}, use) =>{
+        let checkOutPage = new CheckOutPage(page);
+        await use(checkOutPage);
     },
 
     user: async({}, use)=>{

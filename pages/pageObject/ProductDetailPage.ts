@@ -1,7 +1,10 @@
 import {Page, expect, Locator} from '@playwright/test'
-import { CartConfirmationDialog } from './CartConfirmationDialog';
+import { CartConfirmationDialog } from '../components/CartConfirmationDialog';
+import { CartPage } from './CartPage';
 
-export class ProductDetailPage extends CartConfirmationDialog{
+export class ProductDetailPage{
+    private readonly page: Page;
+    readonly cartConfirmationDialog: CartConfirmationDialog;
     private readonly productName: Locator;
     private readonly category: Locator;
     private readonly price: Locator;
@@ -13,7 +16,8 @@ export class ProductDetailPage extends CartConfirmationDialog{
 
 
     constructor(page: Page){
-        super(page);
+        this.page = page;
+        this.cartConfirmationDialog = new CartConfirmationDialog(page);
         this.productName = page.locator("div.product-information h2");
         this.category = page.locator("div.product-information p:has-text('Category:')");
         this.price = page.getByText("Rs");
