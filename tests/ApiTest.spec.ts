@@ -8,18 +8,6 @@ test.describe('API tests - @regression @api', () =>{
 
     test('Create/Register User Account', async()=>{
         const response:any = await ApiHelper.createUser(user)
-        // console.log("Email:" + user.getEmail() + 
-        // " \n Password:" + user.getPassword() + 
-        // " \n First Name:" + user.getName() +
-        // " \n Last Name:" + user.getLastName() +
-        // " \n Address1:" + user.getAddress1() +
-        // " \n Address2:" + user.getAddress2() +
-        // " \n City:" + user.getCity() +
-        // " \n Company:" + user.getCompany() +
-        // " \n State:" + user.getState() +
-        // " \n Phone:" + user.getMobileNumber() +
-        // " \n Country:" + user.getCountry() +
-        // " \n PostCode:" + user.getZipCode());
         expect(response.responseCode).toEqual(201);
         expect(response.message).toBe("User created!");
     });

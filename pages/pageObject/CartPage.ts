@@ -1,8 +1,8 @@
+import { BasePage } from '@pages/common/BasePage';
 import { CheckoutConfirmationDialog } from '@pages/components/CheckOutConfirmationDialog';
 import{Page, expect, Locator} from '@playwright/test';
 
-export class CartPage{
-    private readonly page: Page;
+export class CartPage extends BasePage {
     readonly checkOutConfirmationDialog: CheckoutConfirmationDialog;
     private readonly productTable: Locator;
     private readonly productNameList: Locator;
@@ -11,7 +11,7 @@ export class CartPage{
     private readonly checkOutButton: Locator;
 
     constructor(page: Page){
-        this.page = page;
+        super(page);
         this.checkOutConfirmationDialog = new CheckoutConfirmationDialog(page);
         this.productTable = page.locator("#cart_info table");
         this.productNameList = page.locator("#cart_info_table .cart_description h4");
@@ -48,7 +48,7 @@ export class CartPage{
 
     async clickCheckOut(): Promise<void>{
         await this.checkOutButton.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
 

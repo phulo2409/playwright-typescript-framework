@@ -1,12 +1,12 @@
 import{Page, expect, Locator} from '@playwright/test';
+import { BasePage } from './BasePage';
 
-export class BaseConfirmationDialog {
-    protected readonly page: Page;
+export class BaseConfirmationDialog extends BasePage {
     private readonly firstButton: Locator;
     private readonly secondLink: Locator;
   
     constructor(page: Page, firstBtnLabel: string, secondLinkLabel: string) {
-      this.page = page;
+      super(page);
       this.firstButton = page.getByRole('button', { name: firstBtnLabel });
       this.secondLink = page.getByRole('link', { name: secondLinkLabel });
     }
@@ -17,6 +17,6 @@ export class BaseConfirmationDialog {
   
     protected async clickSecondLink(): Promise<void> {
       await this.secondLink.click();
-      await this.page.waitForLoadState('load');
+      await this.waitForPageLoad();
     }
   }

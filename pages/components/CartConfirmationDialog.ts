@@ -13,7 +13,7 @@ export class CartConfirmationDialog extends BaseConfirmationDialog {
   
     async clickViewCart(): Promise<CartPage> {
       await this.clickSecondLink();
-      await this.page.waitForLoadState('load');
+      await this.waitForPageLoad();
       return new CartPage(this.page);
     }
   }

@@ -1,9 +1,8 @@
-import { blockImages, blockImagesAndCSS } from 'utils/blockImages';
+import { blockImagesAndCSS } from 'utils/blockImages';
 import {test,expect} from '../fixtures/BaseTest';
 import { TestConfig } from '../test.config';
 
 const config = new TestConfig();
-
 
 test.describe('Function Page - @regression @func', ()=>{
     test.beforeEach(async ({page}) => {

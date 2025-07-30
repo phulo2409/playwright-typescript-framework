@@ -2,7 +2,7 @@ import {test,expect} from '../fixtures/BaseTest';
 import { faker } from '@faker-js/faker';
 import { allure } from 'allure-playwright';
 import { ApiHelper } from '../utils/ApiHelper';
-import { blockImages, blockImagesAndCSS } from 'utils/blockImages';
+import { blockImagesAndCSS } from 'utils/blockImages';
 
 test.describe('Account Registration tests - @regression @auth', () =>{
     test.describe.configure({mode: 'default'});

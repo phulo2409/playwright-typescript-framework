@@ -2,6 +2,8 @@ import { UserRandom } from '@data/UserRandom';
 import { expect, Locator, Page } from '@playwright/test';
 import { CartPage } from './CartPage';
 import { BasePage } from '@pages/common/BasePage';
+import * as fs from 'fs';
+import * as path from 'path';
 
 
 export class CheckOutPage extends BasePage{
@@ -77,7 +79,7 @@ export class CheckOutPage extends BasePage{
 
     async clickPlaceOrder(): Promise<void>{
         await this.placeOrderButton.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
     async enterNameOnCard(name: string): Promise<void>{
@@ -102,10 +104,22 @@ export class CheckOutPage extends BasePage{
 
     async clickPayAndConfirm(): Promise<void>{
         await this.payAndConfirmButton.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
-    async clickDownloadInvoice(): Promise<void>{
-        await this.downloadInvoiceButton.click();
+    async clickDownloadInvoice(downloadPath: string): Promise<void>{
+        if (!fs.existsSync(downloadPath)) {
+            fs.mkdirSync(downloadPath, {recursive: true});
+        }
+        //await this.downloadInvoiceButton.click();
+        const [ download ] = await Promise.all([
+            this.page.waitForEvent('download'),
+            this.downloadInvoiceButton.click()
+        ]);
+        //const download = await this.page.waitForEvent('download');
+        
+        const suggesstedFileName: string = download.suggestedFilename();
+        const filePath = path.join(downloadPath, suggesstedFileName);
+        await download.saveAs(filePath);
     }
 }

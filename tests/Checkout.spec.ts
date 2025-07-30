@@ -2,7 +2,7 @@ import { ApiHelper } from 'utils/ApiHelper';
 import {test,expect} from '../fixtures/BaseTest';
 
 test.describe('Checkout Page - @regression @checkout', () => {
-    test('Place Order: Register while Checkout', async ({homePage, cartPage, loginPage, checkOutPage, user}) => {
+    test('Place Order: Register while Checkout', async ({homePage, cartPage, loginPage, checkOutPage, user, page}) => {
         await homePage.addProductByNumberOrder(1);
         await homePage.cartConfirmationDialog.clickViewCart();
         await cartPage.clickCheckOut();
@@ -22,6 +22,9 @@ test.describe('Checkout Page - @regression @checkout', () => {
         await checkOutPage.enterMonthExpiration("12");
         await checkOutPage.enterYearExpiration("2000");
         await checkOutPage.clickPayAndConfirm();
+        //await page.pause();
+        await checkOutPage.clickDownloadInvoice("./downloads/");
         expect(await checkOutPage.getConfirmationMessage()).toBe("Order Placed!");
+
     })
 });

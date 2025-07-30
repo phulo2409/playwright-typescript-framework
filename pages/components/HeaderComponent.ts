@@ -1,6 +1,7 @@
+import { BasePage } from '@pages/common/BasePage';
 import { Page, expect, Locator} from '@playwright/test';
 
-export class HeaderComponent {
+export class HeaderComponent extends BasePage{
     private readonly logoutLink: Locator;
     private readonly loginLink: Locator;
     private readonly contactUsLink: Locator;
@@ -8,7 +9,8 @@ export class HeaderComponent {
     private readonly productLink: Locator;
     private readonly cartLink: Locator;
 
-    constructor(private page: Page) {
+    constructor(page: Page) {
+        super(page)
         this.logoutLink = page.locator("header a:has-text('Logout')");
         this.loginLink = page.getByRole("link", { name: "Signup / Login" });
         this.contactUsLink = page.getByRole("link", { name: "Contact us" });
@@ -20,27 +22,27 @@ export class HeaderComponent {
 
     async clickLogin(): Promise<void>{
         await this.loginLink.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
     async clickContactUs(): Promise<void>{
         await this.contactUsLink.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
     async clickTestCases(): Promise<void>{
         await this.testCasesLink.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
     async clickProducts(): Promise<void>{
         await this.productLink.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
     async clickCart(): Promise<void>{
         await this.cartLink.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
     async clickLogout(): Promise<void>{

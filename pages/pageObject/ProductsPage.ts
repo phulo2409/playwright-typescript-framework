@@ -3,9 +3,9 @@ import { ProductDetailPage } from './ProductDetailPage';
 import { CartPage } from './CartPage';
 import { ProductComponent } from '@pages/components/ProductComponent';
 import { CartConfirmationDialog } from '@pages/components/CartConfirmationDialog';
+import { BasePage } from '@pages/common/BasePage';
 
-export class ProductsPage{
-    private readonly page: Page;
+export class ProductsPage extends BasePage{
     private readonly productComponent: ProductComponent;
     readonly cartConfirmationDialog: CartConfirmationDialog;
     private readonly productList: Locator;
@@ -14,11 +14,10 @@ export class ProductsPage{
     private readonly searchButton: Locator;
     
     constructor(page: Page){
-        this.page = page;
+        super(page);
         this.productComponent = new ProductComponent(page);
         this.cartConfirmationDialog = new CartConfirmationDialog(page);
         this.productList = page.locator(".product-image-wrapper ");
-        //this.viewProductList = page.locator("//div[@class='product-image-wrapper']//a[normalize-space()='View Product']");
         this.viewProductList = page.locator("div.product-image-wrapper").getByRole("link", { name: "View Product" });
         this.searchBar = page.locator("#search_product");
         this.searchButton = page.locator("#submit_search");
@@ -45,7 +44,7 @@ export class ProductsPage{
     async searchProduct(productName: string): Promise<void>{
         await this.searchBar.fill(productName);
         await this.searchButton.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 
     async isProductNameExists(productName: string): Promise<boolean>{

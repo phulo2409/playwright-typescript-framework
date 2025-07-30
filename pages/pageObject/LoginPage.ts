@@ -240,6 +240,6 @@ export class LoginPage extends BasePage{
         await this.emailLoginTextbox.fill(email);
         await this.passwordLoginTextbox.fill(pwd);
         await this.loginButton.click();
-        await this.page.waitForLoadState('load');
+        await this.waitForPageLoad();
     }
 }
